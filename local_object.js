@@ -25,7 +25,7 @@ function onSubmit(e){
 
         };
         let myObj_serialized = JSON.stringify(myObj);
-        localStorage.setItem("myObj", myObj_serialized);
+        localStorage.setItem(emailInput.value, myObj_serialized);
         let myObj_deserialized = JSON.parse(localStorage.getItem("myObj"));
       
 
