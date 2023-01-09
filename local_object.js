@@ -34,24 +34,44 @@ function onSubmit(e){
         createEle.appendChild(createDeletenode);
       
 
+        var createBtn= document.createElement('input');
+        createBtn.type = 'button';
+        createBtn.value = "Edit"
+        createBtn.id ="edit";
+        var createEditnode = document.createTextNode('Edit');
+        createBtn.appendChild(createEditnode);
+      
+
     li.appendChild(document.createTextNode(`${nameInput.value}: ${emailInput.value}: ${phone_number.value}`));
-       li.appendChild(createEle);
+      li.appendChild(createEle);
+       li.appendChild(createBtn);
     li.id = nameInput.value;
     userList.appendChild(li);
     var buttonid = document.getElementById(nameInput.value);
     var listid = document.getElementById(nameInput.value);
     
-      buttonid.addEventListener("click",deleteFunction);
+      buttonid.addEventListener('click',deleteFunction);
       function deleteFunction(e){
-        //console.log(listid);
-        // console.log(listid.innerHTML.split(": ")[1]);
-        listid.remove();
-        
-        localStorage.removeItem(listid.innerHTML.split(": ")[1]);
-        
+        if(e.target.value=="Delete"){
+          listid.remove();
+         localStorage.removeItem(listid.innerHTML.split(": ")[1]);
 
-          
+        }
+        else
+        {
+          listid.remove();
+          var ITEM = localStorage.getItem(listid.innerHTML.split(": ")[1]); 
+          var details= ITEM.split(","); 
+          nameInput.value= ITEM.split(",")[0].split(":")[1].replaceAll("\"","");
+          emailInput.value= ITEM.split(",")[1].split(":")[1].replaceAll("\"","");
+          phone_number.value=ITEM.split(",")[2].split(":")[1].replaceAll(/["{}]/g, "");
+          localStorage.removeItem(listid.innerHTML.split(": ")[1]);
+        }
+       
+        console.log(e.target.value);
       }
+
+        
 
 
 
