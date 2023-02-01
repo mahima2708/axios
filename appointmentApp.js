@@ -22,7 +22,7 @@ function onSubmit(e){
             phone_number : phone_number.value 
 
         };
-        axios.post("https://crudcrud.com/api/aaff981a84e84e7bbffb78172a674a9c/user_details",myObj)
+        axios.post("https://crudcrud.com/api/d515501a5082459fb313d0e9589f6883/user_details",myObj)
         .then((response)=> {
             console.log(response)
         })
@@ -33,6 +33,7 @@ function onSubmit(e){
         // localStorage.setItem(emailInput.value, myObj_serialized);
         // let myObj_deserialized = JSON.parse(localStorage.getItem("myObj"));
 
+        
           var createEle = document.createElement('input');
         createEle.type = 'button';
         createEle.value = "Delete"
@@ -89,3 +90,21 @@ function onSubmit(e){
   }
 
 }
+
+window.addEventListener("DOMContentLoaded", () =>{
+    axios.get("https://crudcrud.com/api/d515501a5082459fb313d0e9589f6883/user_details")
+    .then((response) =>{
+        for(var i=0; i<response.data.length;i++){
+            //console.log(response.data[i]);
+            showOnScreen(response.data[i])
+        }
+    })
+})
+
+function showOnScreen(user){
+    const li = document.createElement('li');
+    li.appendChild(document.createTextNode(`${user.nameInput}: ${user.emailInput}: ${user.phone_number}`));
+    userList.appendChild(li);
+    
+}
+   
