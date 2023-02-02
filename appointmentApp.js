@@ -4,6 +4,7 @@ const emailInput= document.querySelector('#email');
 const phone_number=document.querySelector('#phnumber');
 const msg= document.querySelector('.msg');
 const userList = document.querySelector('#users');
+
 myform.addEventListener('submit', onSubmit);
 function onSubmit(e){
     e.preventDefault();
@@ -22,19 +23,17 @@ function onSubmit(e){
             phone_number : phone_number.value 
 
         };
-        axios.post("https://crudcrud.com/api/d515501a5082459fb313d0e9589f6883/user_details",myObj)
+        axios.post("https://crudcrud.com/api/5a42796ee4ee4a548d143986769ab381/user_details",myObj)
         .then((response)=> {
+          
             console.log(response)
         })
         .catch((err)=> {
             console.log(err)
         })
-        // let myObj_serialized = JSON.stringify(myObj);
-        // localStorage.setItem(emailInput.value, myObj_serialized);
-        // let myObj_deserialized = JSON.parse(localStorage.getItem("myObj"));
+       
 
-        
-          var createEle = document.createElement('input');
+        var createEle = document.createElement('input');
         createEle.type = 'button';
         createEle.value = "Delete"
         createEle.id ="buttonid";
@@ -57,13 +56,12 @@ function onSubmit(e){
     userList.appendChild(li);
     var buttonid = document.getElementById(nameInput.value);
     var listid = document.getElementById(nameInput.value);
-    
-      buttonid.addEventListener('click',deleteFunction);
+    console.log(listid._id);
+     buttonid.addEventListener('click',deleteFunction);
       function deleteFunction(e){
         if(e.target.value=="Delete"){
-          console.log(listid.innerHTML);
           listid.remove();
-         localStorage.removeItem(listid.innerHTML.split(": ")[1]);
+        
 
         }
         else
@@ -76,12 +74,7 @@ function onSubmit(e){
           phone_number.value=ITEM.split(",")[2].split(":")[1].replaceAll(/["{}]/g, "");
           localStorage.removeItem(listid.innerHTML.split(": ")[1]);
         }
-       
-        console.log(e.target.value);
       }
-
-        
-
 
 
     nameInput.value = '';
@@ -92,19 +85,51 @@ function onSubmit(e){
 }
 
 window.addEventListener("DOMContentLoaded", () =>{
-    axios.get("https://crudcrud.com/api/d515501a5082459fb313d0e9589f6883/user_details")
+    axios.get("https://crudcrud.com/api/5a42796ee4ee4a548d143986769ab381/user_details")
     .then((response) =>{
         for(var i=0; i<response.data.length;i++){
-            //console.log(response.data[i]);
-            showOnScreen(response.data[i])
+         // console.log(response.data[i]._id);  
+          showOnScreen(response.data[i])
         }
     })
 })
 
 function showOnScreen(user){
     const li = document.createElement('li');
+    
+    var createEle = document.createElement('input');
+    createEle.type = 'button';
+    createEle.value = "Delete"
+    createEle.id ="buttonid";
+    var createDeletenode = document.createTextNode('Delete');
+    createEle.appendChild(createDeletenode);
+  
+
+    var createBtn= document.createElement('input');
+    createBtn.type = 'button';
+    createBtn.value = "Edit"
+    createBtn.id ="edit";
+    var createEditnode = document.createTextNode('Edit');
+    createBtn.appendChild(createEditnode);
     li.appendChild(document.createTextNode(`${user.nameInput}: ${user.emailInput}: ${user.phone_number}`));
-    userList.appendChild(li);
+    li.appendChild(createEle);
+    li.appendChild(createBtn);
+     userList.appendChild(li);
+     li.id = user.nameInput;
+
+     var buttonid = document.getElementById(user.nameInput);
+    var listid = document.getElementById(user.nameInput);
+  
+     buttonid.addEventListener('click',dltFunction);
+    function dltFunction(e){
+      e.preventDefault(); 
+        if(e.target.value=="Delete"){
+          axios.delete("https://crudcrud.com/api/5a42796ee4ee4a548d143986769ab381/user_details/"+user._id)
+          listid.remove();
+      
+      
+        }
+    }
     
 }
    
